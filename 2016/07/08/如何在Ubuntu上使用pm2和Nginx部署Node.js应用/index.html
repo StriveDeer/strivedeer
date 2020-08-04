@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN,default">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="linux,nginx,ubuntu,node.js,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="BiJi | 爱你如初" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="本文主要展示如何安装和配置 pm2 用于这个简单的 ‘Express’ 应用，然后配置 Nginx 作为运行在 pm2 下的 node 应用的反向代理。  pm2 是一个 Node.js 应用的进程管理器，它可以让你的应用程序保持运行，还有一个内建的负载均衡器。它非常简单而且强大，你可以零间断重启或重新加载你的 node 应用，它也允许你为你的 node 应用创建集群。 在这篇博文中，我会向你展示">
+<meta name="keywords" content="linux,nginx,ubuntu,node.js">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何在Ubuntu上使用pm2和Nginx部署Node.js应用">
+<meta property="og:url" content="http://www.ibiji.top/2016/07/08/如何在Ubuntu上使用pm2和Nginx部署Node.js应用/index.html">
+<meta property="og:site_name" content="BiJi | 爱你如初">
+<meta property="og:description" content="本文主要展示如何安装和配置 pm2 用于这个简单的 ‘Express’ 应用，然后配置 Nginx 作为运行在 pm2 下的 node 应用的反向代理。  pm2 是一个 Node.js 应用的进程管理器，它可以让你的应用程序保持运行，还有一个内建的负载均衡器。它非常简单而且强大，你可以零间断重启或重新加载你的 node 应用，它也允许你为你的 node 应用创建集群。 在这篇博文中，我会向你展示">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://www.ibiji.top/images/ubuntu/PM2_nodejs/001.jpeg">
+<meta property="og:image" content="http://www.ibiji.top/images/ubuntu/PM2_nodejs/002.png">
+<meta property="og:image" content="http://www.ibiji.top/images/ubuntu/PM2_nodejs/003.png">
+<meta property="og:image" content="http://www.ibiji.top/images/ubuntu/PM2_nodejs/004.png">
+<meta property="og:image" content="http://www.ibiji.top/images/ubuntu/PM2_nodejs/005.png">
+<meta property="og:image" content="http://www.ibiji.top/images/ubuntu/PM2_nodejs/006.png">
+<meta property="og:image" content="http://www.ibiji.top/images/ubuntu/PM2_nodejs/007.png">
+<meta property="og:image" content="http://www.ibiji.top/images/ubuntu/PM2_nodejs/008.png">
+<meta property="og:image" content="http://www.ibiji.top/images/ubuntu/PM2_nodejs/009.png">
+<meta property="og:image" content="http://www.ibiji.top/images/ubuntu/PM2_nodejs/010.png">
+<meta property="og:image" content="http://www.ibiji.top/images/ubuntu/PM2_nodejs/011.png">
+<meta property="og:updated_time" content="2020-08-04T12:52:31.019Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何在Ubuntu上使用pm2和Nginx部署Node.js应用">
+<meta name="twitter:description" content="本文主要展示如何安装和配置 pm2 用于这个简单的 ‘Express’ 应用，然后配置 Nginx 作为运行在 pm2 下的 node 应用的反向代理。  pm2 是一个 Node.js 应用的进程管理器，它可以让你的应用程序保持运行，还有一个内建的负载均衡器。它非常简单而且强大，你可以零间断重启或重新加载你的 node 应用，它也允许你为你的 node 应用创建集群。 在这篇博文中，我会向你展示">
+<meta name="twitter:image" content="http://www.ibiji.top/images/ubuntu/PM2_nodejs/001.jpeg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.ibiji.top/2016/07/08/如何在Ubuntu上使用pm2和Nginx部署Node.js应用/">
+
+
+
+
+
+  <title>如何在Ubuntu上使用pm2和Nginx部署Node.js应用 | BiJi | 爱你如初</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">BiJi | 爱你如初</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">笔迹 · 鱼沈雁杳天涯路，始信人间别离苦</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-首页">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-关于">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-分类">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-归档">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-留言">
+          <a href="/comment/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-comment"></i> <br>
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.ibiji.top/2016/07/08/如何在Ubuntu上使用pm2和Nginx部署Node.js应用/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Antler">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BiJi | 爱你如初">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">如何在Ubuntu上使用pm2和Nginx部署Node.js应用</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-07-08T16:41:30+08:00">
+                2016-07-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/转载/" itemprop="url" rel="index">
+                    <span itemprop="name">转载</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本文主要展示如何安装和配置 pm2 用于这个简单的 ‘Express’ 应用，然后配置 Nginx 作为运行在 pm2 下的 node 应用的反向代理。</p>
+<p><a href="/images/ubuntu/PM2_nodejs/001.jpeg"><img class="aligncenter" title="如何在Ubuntu上使用pm2和Nginx部署Node.js应用" src="/images/ubuntu/PM2_nodejs/001.jpeg" border="0"></a></p>
+<p>pm2 是一个 Node.js 应用的进程管理器，它可以让你的应用程序保持运行，还有一个内建的负载均衡器。它非常简单而且强大，你可以零间断重启或重新加载你的 node 应用，它也允许你为你的 node 应用创建集群。</p>
+<p>在这篇博文中，我会向你展示如何安装和配置 pm2 用于这个简单的 ‘Express’ 应用，然后配置 Nginx 作为运行在 pm2 下的 node 应用的反向代理。<br><a id="more"></a><br>前提：</p>
+<ul><br>    <li>Ubuntu 16.04 - 64bit</li><br>    <li>Root 权限</li><br></ul><br><strong>第一步 - 安装 Node.js LTS</strong><br><br>在这篇指南中，我们会从零开始我们的实验。首先，我们需要在服务器上安装 Node.js。我会使用 Nodejs LTS 6.x 版本，它能从 nodesource 仓库中安装。<br><br>从 Ubuntu 仓库安装 python-software-properties 软件包并添加 “nodesource” Nodejs 仓库。<br><ol class="dp-sql"><br>    <li class="alt">sudo apt-get install -y python-software-properties</li><br>    <li>curl -sL <a href="https://deb.nodesource.com/setup_6.x" target="_blank" rel="noopener">https://deb.nodesource.com/setup_6.x</a> | sudo -E bash -</li><br></ol><br>安装最新版本的 Nodejs LTS：<br><ol class="dp-sql"><br>    <li class="alt">sudo apt-get install -y nodejs</li><br></ol><br>安装完成后，查看 node 和 npm 版本。<br><ol class="dp-sql"><br>    <li class="alt">node -v</li><br>    <li>npm -v</li><br></ol><br><a href="/images/ubuntu/PM2_nodejs/002.png" target="_blank" rel="noopener noreferrer"><img class="aligncenter" title="检查 node.js 版本" src="/images/ubuntu/PM2_nodejs/002.png" alt="检查 node.js 版本" border="0"></a><br><br>检查 node.js 版本<br><br><strong>第二步 - 生成 Express 示例 App</strong><br><br>我会使用 express-generator 软件包生成的简单 web 应用框架进行示例安装。express-generator 可以使用 npm 命令安装。<br><br>用 npm安装 express-generator：<br><ol class="dp-sql"><br>    <li class="alt">npm install express-generator -g</li><br></ol><br>-g ： 在系统内部安装软件包。<br><br>我会以普通用户运行应用程序，而不是 root 或者超级用户。我们首先需要创建一个新的用户。<br><br>创建一个名为 yume 的用户：<br><ol class="dp-sql"><br>    <li class="alt">useradd -m -s /bin/bash yume</li><br>    <li>passwd yume</li><br></ol><br>使用 su 命令登录到新用户：<br><ol class="dp-sql"><br>    <li class="alt">su - yume</li><br></ol><br>下一步，用 express 命令生成一个新的简单 web 应用程序：<br><ol class="dp-sql"><br>    <li class="alt">express hakase-app</li><br></ol><br>命令会创建新项目目录 hakase-app。<br><br><a href="/images/ubuntu/PM2_nodejs/003.png" target="_blank" rel="noopener noreferrer"><img class="aligncenter" title="用 express-generator 生成应用框架" src="/images/ubuntu/PM2_nodejs/003.png" alt="用 express-generator 生成应用框架" border="0"></a><br><br>用 express-generator 生成应用框架<br><br>进入到项目目录并安装应用需要的所有依赖。<br><ol class="dp-sql"><br>    <li class="alt">cd hakase-app</li><br>    <li>npm install</li><br></ol><br>然后用下面的命令测试并启动一个新的简单应用程序：<br><ol class="dp-sql"><br>    <li class="alt">DEBUG=myapp:* npm start</li><br></ol><br>默认情况下，我们的 express 应用会运行在 3000 端口。现在访问服务器的 IP 地址：192.168.33.10:3000 ：<br><br><a href="/images/ubuntu/PM2_nodejs/004.png" target="_blank" rel="noopener noreferrer"><img class="aligncenter" title="express nodejs 运行在 3000 端口" src="/images/ubuntu/PM2_nodejs/004.png" alt="express nodejs 运行在 3000 端口" border="0"></a><br><br>express nodejs 运行在 3000 端口<br><br>这个简单 web 应用框架现在以 ‘yume’ 用户运行在 3000 端口。<br><br><strong>第三步 - 安装 pm2</strong><br><br>pm2 是一个 node 软件包，可以使用 npm 命令安装。(用 root 权限，如果你仍然以 yume 用户登录，那么运行命令 exit 再次成为 root 用户)：<br><ol class="dp-sql"><br>    <li class="alt">npm install pm2 -g</li><br></ol><br>现在我们可以为我们的 web 应用使用 pm2 了。<br><br>进入应用目录 hakase-app：<br><ol class="dp-sql"><br>    <li class="alt">su - yume</li><br>    <li>cd ~/hakase-app/</li><br></ol><br>这里你可以看到一个名为 package.json 的文件，用 cat 命令显示它的内容。<br><ol class="dp-sql"><br>    <li class="alt">cat package.json</li><br></ol><br><a href="/images/ubuntu/PM2_nodejs/005.png" target="_blank" rel="noopener noreferrer"><img class="aligncenter" title="配置 express nodejs 服务" src="/images/ubuntu/PM2_nodejs/005.png" alt="配置 express nodejs 服务" border="0"></a><br><br>配置 express nodejs 服务<br><br>你可以看到 start 行有一个 nodejs 用于启动 express 应用的命令。我们会和 pm2 进程管理器一起使用这个命令。<br><br>像下面这样使用 pm2 命令运行 express 应用：<br><ol class="dp-sql"><br>    <li class="alt">pm2 start ./bin/www</li><br></ol><br>现在你可以看到像下面这样的结果：<br><br><a href="/images/ubuntu/PM2_nodejs/006.png" target="_blank" rel="noopener noreferrer"><img class="aligncenter" title="使用 pm2 运行 nodejs app" src="/images/ubuntu/PM2_nodejs/006.png" alt="使用 pm2 运行 nodejs app" border="0"></a><br><br>使用 pm2 运行 nodejs app<br><br>我们的 express 应用正在 pm2 中运行，名称为 www，id 为 0。你可以用 show 选项 show nodeid|name 获取更多 pm2 下运行的应用的信息。<br><ol class="dp-sql"><br>    <li class="alt">pm2 show www</li><br></ol><br><a href="/images/ubuntu/PM2_nodejs/007.png" target="_blank" rel="noopener noreferrer"><img class="aligncenter" title="pm2 服务状态" src="/images/ubuntu/PM2_nodejs/007.png" alt="pm2 服务状态" border="0"></a><br><br><em>pm2 服务状态</em><br><br>如果你想看我们应用的日志，你可以使用 logs 选项。它包括访问和错误日志，你还可以看到应用程序的 HTTP 状态。<br><ol class="dp-sql"><br>    <li class="alt">pm2 logs www</li><br></ol><br><a href="/images/ubuntu/PM2_nodejs/008.png" target="_blank" rel="noopener noreferrer"><img class="aligncenter" title="pm2 服务日志" src="/images/ubuntu/PM2_nodejs/008.png" alt="pm2 服务日志" border="0"></a><br><br>pm2 服务日志<br><br>你可以看到我们的程序正在运行。现在，让我们来让它开机自启动。<br><ol class="dp-sql"><br>    <li class="alt">pm2 startup systemd</li><br></ol><br><ul><br>    <li>systemd： Ubuntu 16 使用的是 systemd。</li><br></ul><br>你会看到要用 root 用户运行命令的信息。使用 exit 命令回到 root 用户然后运行命令。<br><ol class="dp-sql"><br>    <li class="alt">sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u yume <span class="comment">–hp /home/yume</span></li><br></ol><br>它会为启动应用程序生成 systemd 配置文件。当你重启服务器的时候，应用程序就会自动运行。<br><br><a href="/images/ubuntu/PM2_nodejs/009.png" target="_blank" rel="noopener noreferrer"><img class="aligncenter" title="pm2 添加服务到开机自启动" src="/images/ubuntu/PM2_nodejs/009.png" alt="pm2 添加服务到开机自启动" border="0"></a><br><br>pm2 添加服务到开机自启动<br><br><strong>第四步 - 安装和配置 Nginx 作为反向代理</strong><br><br>在这篇指南中，我们会使用 Nginx 作为 node 应用的反向代理。Ubuntu 仓库中有 Nginx，用 apt 命令安装它：<br><ol class="dp-sql"><br>    <li class="alt">sudo apt-get install -y nginx</li><br></ol><br>下一步，进入到 sites-available 目录并创建新的虚拟主机配置文件。<br><ol class="dp-sql"><br>    <li class="alt">cd /etc/nginx/sites-available/</li><br>    <li>vim hakase-app</li><br></ol><br>粘贴下面的配置：<br><ol class="dp-sql"><br>    <li class="alt">upstream hakase-app {</li><br>    <li>    # Nodejs app upstream</li><br>    <li class="alt">    server 127.0.0.1:3000;</li><br>    <li>    keepalive 64;</li><br>    <li class="alt">}</li><br>    <li># Server <span class="keyword">on</span> port 80</li><br>    <li class="alt">server {</li><br>    <li>    listen 80;</li><br>    <li class="alt">    server_name hakase-node.co;</li><br>    <li>    root /home/yume/hakase-app;</li><br>    <li class="alt">    location / {</li><br>    <li>        # Proxy_pass configuration</li><br>    <li class="alt">        proxy_set_header X-Forwarded-<span class="keyword">For</span> $proxy_add_x_forwarded_for;</li><br>    <li>        proxy_set_header Host $http_host;</li><br>    <li class="alt">        proxy_set_header X-NginX-Proxy <span class="keyword">true</span>;</li><br>    <li>        proxy_http_version 1.1;</li><br>    <li class="alt">        proxy_set_header Upgrade $http_upgrade;</li><br>    <li>        proxy_set_header <span class="keyword">Connection</span> <span class="string">“upgrade”</span>;</li><br>    <li class="alt">        proxy_max_temp_file_size 0;</li><br>    <li>        proxy_pass <a href="http://hakase-app/" target="_blank" rel="noopener">http://hakase-app/</a>;</li><br>    <li class="alt">        proxy_redirect <span class="keyword">off</span>;</li><br>    <li>        proxy_read_timeout 240s;</li><br>    <li class="alt">    }</li><br>    <li>}</li><br></ol><br>保存文件并退出 vim。<br><br>在配置中：<br><ul><br>    <li>node 应用使用域名 hakase-node.co 运行。</li><br>    <li>所有来自 nginx 的流量都会被转发到运行在 3000 端口的 node app。</li><br></ul><br>测试 Nginx 配置确保没有错误。<br><ol class="dp-sql"><br>    <li class="alt">nginx -t</li><br></ol><br>启用 Nginx 并使其开机自启动。<br><ol class="dp-sql"><br>    <li class="alt">systemctl start nginx</li><br>    <li>systemctl enable nginx</li><br></ol><br><strong>第五步 - 测试</strong><br><br>打开你的 web 浏览器并访问域名：<a href="http://hakase-app.co/" target="_blank" rel="noopener">http://hakase-app.co </a>。<br><br>你可以看到 express 应用正在 Nginx web 服务器中运行。<br><br><a href="/images/ubuntu/PM2_nodejs/010.png" target="_blank" rel="noopener noreferrer"><img class="aligncenter" title="Nodejs app 在 pm2 和 Nginx 中运行" src="/images/ubuntu/PM2_nodejs/010.png" alt="Nodejs app 在 pm2 和 Nginx 中运行" border="0"></a><br><br>Nodejs app 在 pm2 和 Nginx 中运行<br><br>下一步，重启你的服务器，确保你的 node app 能开机自启动：<br><ol class="dp-sql"><br>    <li class="alt">pm2 save</li><br>    <li>sudo reboot</li><br></ol><br>如果你再次登录到了你的服务器，检查 node app 进程。以 yume 用户运行下面的命令。<br><ol class="dp-sql"><br>    <li class="alt">su - yume</li><br>    <li>pm2 status www</li><br></ol><br><a href="/images/ubuntu/PM2_nodejs/011.png" target="_blank" rel="noopener noreferrer"><img class="aligncenter" title="nodejs 在 pm2 下开机自启动" src="/images/ubuntu/PM2_nodejs/011.png" alt="nodejs 在 pm2 下开机自启动" border="0"></a><br><br>nodejs 在 pm2 下开机自启动<br><br>Node 应用在 pm2 中运行并使用 Nginx 作为反向代理。<br><br><strong>相关链接</strong><br><ul><br>    <li><a href="https://www.ubuntu.com/" target="_blank" rel="noopener">Ubuntu</a></li><br>    <li><a href="https://nodejs.org/en/" target="_blank" rel="noopener">Node.js</a></li><br>    <li><a href="https://www.nginx.com/" target="_blank" rel="noopener">Nginx</a></li><br></ul>
+
+<hr>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #6e6e6e;font-size:15px;">本文结束<i class="far fa-laugh-beam"></i>感谢您的阅读,本文原创–支持原创
+        </div>
+    
+</div>
+      
+    </div>
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>顺便打点赏吧~  有问题请联系我--strivedeer@163.com</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Antler 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="Antler 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/linux/" rel="tag"><i class="fa fa-tag"></i> linux</a>
+          
+            <a href="/tags/nginx/" rel="tag"><i class="fa fa-tag"></i> nginx</a>
+          
+            <a href="/tags/ubuntu/" rel="tag"><i class="fa fa-tag"></i> ubuntu</a>
+          
+            <a href="/tags/node-js/" rel="tag"><i class="fa fa-tag"></i> node.js</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/06/15/Linux内核态抢占机制分析/" rel="next" title="Linux内核态抢占机制分析">
+                <i class="fa fa-chevron-left"></i> Linux内核态抢占机制分析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/08/20/在Linux中安装和使用cpustat/" rel="prev" title="在Linux中安装和使用cpustat">
+                在Linux中安装和使用cpustat <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zOTg3NC8xNjQwMQ"></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="Antler">
+            
+              <p class="site-author-name" itemprop="name">Antler</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">44</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">45</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/StriveDeer" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://gitee.com/antlerR/" target="_blank" title="Gitee">
+                      
+                        <i class="fa fa-fw fa-git"></i>Gitee</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:strivedeer@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+
+  <i class="fa fa-heart" aria-hidden="true">IBiJi</i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Antler</span>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+<script src="https://s95.cnzz.com/z_stat.php?id=1260533060&web_id=1260533060" language="JavaScript"></script>
+
+  
+</div>
+
+
+  <span class="post-meta-divider"> </span>
+
+
+
+
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共48.8k字</span>
+</div>
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?487423740050432cdb057a9a3236f717";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

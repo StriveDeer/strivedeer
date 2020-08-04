@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN,default">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="linux,yum,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="BiJi | 爱你如初" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="yum（全称为 Yellow dog Updater, Modified）是一个在Fedora和RedHat以及SUSE中的Shell前端软件包管理器。基於RPM包管理，能够从指定的服务器自动下载RPM包并且安装，可以自动处理依赖性关系，并且一次安装所有依赖的软体包，无须繁琐地一次次下载、安装。yum提供了查找、安装、删除某一个、一组甚至全部软件包的命令，而且命令简洁而又好记。 yum的命令形式一">
+<meta name="keywords" content="linux,yum">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux下yum命令是什么意思 原理和使用方法详解">
+<meta property="og:url" content="http://www.ibiji.top/2016/04/14/linux下yum命令是什么意思 原理和使用方法详解/index.html">
+<meta property="og:site_name" content="BiJi | 爱你如初">
+<meta property="og:description" content="yum（全称为 Yellow dog Updater, Modified）是一个在Fedora和RedHat以及SUSE中的Shell前端软件包管理器。基於RPM包管理，能够从指定的服务器自动下载RPM包并且安装，可以自动处理依赖性关系，并且一次安装所有依赖的软体包，无须繁琐地一次次下载、安装。yum提供了查找、安装、删除某一个、一组甚至全部软件包的命令，而且命令简洁而又好记。 yum的命令形式一">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-08-04T12:52:31.015Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="linux下yum命令是什么意思 原理和使用方法详解">
+<meta name="twitter:description" content="yum（全称为 Yellow dog Updater, Modified）是一个在Fedora和RedHat以及SUSE中的Shell前端软件包管理器。基於RPM包管理，能够从指定的服务器自动下载RPM包并且安装，可以自动处理依赖性关系，并且一次安装所有依赖的软体包，无须繁琐地一次次下载、安装。yum提供了查找、安装、删除某一个、一组甚至全部软件包的命令，而且命令简洁而又好记。 yum的命令形式一">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.ibiji.top/2016/04/14/linux下yum命令是什么意思 原理和使用方法详解/">
+
+
+
+
+
+  <title>linux下yum命令是什么意思 原理和使用方法详解 | BiJi | 爱你如初</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">BiJi | 爱你如初</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">笔迹 · 鱼沈雁杳天涯路，始信人间别离苦</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-首页">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-关于">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-分类">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-归档">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-留言">
+          <a href="/comment/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-comment"></i> <br>
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.ibiji.top/2016/04/14/linux下yum命令是什么意思 原理和使用方法详解/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Antler">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BiJi | 爱你如初">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">linux下yum命令是什么意思 原理和使用方法详解</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-04-14T09:54:41+08:00">
+                2016-04-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/转载/" itemprop="url" rel="index">
+                    <span itemprop="name">转载</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>yum（全称为 Yellow dog Updater, Modified）是一个在Fedora和RedHat以及SUSE中的Shell前端软件包管理器。基於RPM包管理，能够从指定的服务器自动下载RPM包并且安装，可以自动处理依赖性关系，并且一次安装所有依赖的软体包，无须繁琐地一次次下载、安装。yum提供了查找、安装、删除某一个、一组甚至全部软件包的命令，而且命令简洁而又好记。</p>
+<p>yum的命令形式一般是如下：yum [options] [command] [package …]<br>其中的[options]是可选的，选项包括-h（帮助），-y（当安装过程提示选择全部为”yes”），-q（不显示安装的过程）等等。[command]为所要进行的操作，[package …]是操作的对象。<br><a id="more"></a><br>概括了部分常用的命令包括：</p>
+<p>自动搜索最快镜像插件：   yum install yum-fastestmirror<br>安装yum图形窗口插件：    yum install yumex<br>查看可能批量安装的列表： yum grouplist</p>
+<p>1 安装<br>yum install 全部安装<br>yum install package1 安装指定的安装包package1<br>yum groupinsall group1 安装程序组group1</p>
+<p>2 更新和升级<br>yum update 全部更新<br>yum update package1 更新指定程序包package1<br>yum check-update 检查可更新的程序<br>yum upgrade package1 升级指定程序包package1<br>yum groupupdate group1 升级程序组group1</p>
+<p>3 查找和显示<br>yum info package1 显示安装包信息package1<br>yum list 显示所有已经安装和可以安装的程序包<br>yum list package1 显示指定程序包安装情况package1<br>yum groupinfo group1 显示程序组group1信息yum search string 根据关键字string查找安装包</p>
+<p>4 删除程序<br>yum remove | erase package1 删除程序包package1<br>yum groupremove group1 删除程序组group1<br>yum deplist package1 查看程序package1依赖情况</p>
+<p>5 清除缓存<br>yum clean packages 清除缓存目录下的软件包<br>yum clean headers 清除缓存目录下的 headers<br>yum clean oldheaders 清除缓存目录下旧的 headers<br>yum clean, yum clean all (= yum clean packages; yum clean oldheaders) 清除缓存目录下的软件包及旧的headers</p>
+<p>比如，要安装游戏程序组，首先进行查找：<br>＃：yum grouplist<br>可以发现，可安装的游戏程序包名字是”Games and Entertainment“，这样就可以进行安装：<br>＃：yum groupinstall “Games and Entertainment”<br>所 有的游戏程序包就自动安装了。在这里Games and Entertainment的名字必须用双引号选定，因为linux下面遇到空格会认为文件名结束了，因此必须告诉系统安装的程序包的名字是“Games and Entertainment”而不是“Games”。</p>
+<p>此外，还可以修改配置文件/etc/yum.conf选择安装源。可见yum进行配置程序有多方便了吧。更多详细的选项和命令，当然只要在命令提示行下面:man yum</p>
+<p>代码如下:yum groupinstall “KDE (K Desktop Environment)”</p>
+<p>yum install pirut k3b mikmod</p>
+<p>yum groupinstall “Server Configuration Tools”</p>
+<p>yum groupinstall “Sound and Video”</p>
+<p>#yum groupinstall “GNOME Desktop Environment”</p>
+<p>yum groupinstall “Legacy Software Support”</p>
+<p>yum groupinstall “Development Libraries”</p>
+<p>yum groupinstall “Development Tools”</p>
+<p>#yum groupinstall “Windows File Server”</p>
+<p>yum groupinstall “System Tools”</p>
+<p>yum groupinstall “X Window System”</p>
+<p>yum install php-gd<br>yum install gd-devel<br>yum groupinstall “Chinese Support”</p>
+<p>#yum install samba-common  //该执行会一起安装 samba-client</p>
+<p>#yum install samba</p>
+<p>yum install gcc<br>yum install cpp<br>yum install gcc-c++<br>yum install ncurses<br>yum install ncurses-devel<br>yum install gd-devel php-gd<br>yum install gd-devel<br>yum install gcc<br>yum install cpp<br>yum install gcc-c++<br>yum install ncurses<br>yum install ncurses-devel<br>yum install gd-devel php-gd<br>yum install gd-devel<br>yum install zlib-devel<br>yum install freetype-devel freetype-demos freetype-utils<br>yum install libpng-devel libpng10 libpng10-devel<br>yum install libjpeg-devel<br>yum install ImageMagick<br>yum install php-gd<br>yum install flex<br>yum install ImageMagick-devel</p>
+<p>#yum install system-config-bind</p>
+<p>#yum groupinstall “DNS Name Server”      //安裝 bind 及 bind-chroot 套件<br>yum groupinstall “MySQL Database”‘</p>
+<p>yum clean all</p>
+<p>装了个fedora linux不能用中文输入是一件很棘手的事，连搜解决方案都没法搜。只能勉强用几个拼音碰碰运气，看Google能不能识别了。而我就遇见了这样的事。<br>解决方案：<br>yum install scim* -y</p>
+<p>yum 命令详解：<br>Redhat和Fedora的软件安装命令是rpm，但是用rpm安装软件最大的麻烦就是需要手动寻找安装该软件所需要的一系列依赖关系，超级 麻烦不说，要是软件不用了需要卸载的话由于卸载掉了某个依赖关系而导致其他的软件不能用是非常恼人的。令人高兴的是，Fedora终于推出了类似于 ubuntu中的apt的命令yum，令Fedora的软件安装变得简单容易。Yum 有以下特点：<br><em>可以同时配置多个资源库(Repository)
+</em>简洁的配置文件(/etc/yum.conf)<br><em>自动解决增加或删除rpm包时遇到的倚赖性问题
+</em>使用方便<br>*保持与RPM数据库的一致性<br>yum，是Yellow dog Updater Modified的简称，起初是由yellow dog这一发行版的开发者Terra Soft研发，用python写成，那时还叫做yup(yellow dog updater)，后经杜克大学的Linux@Duke开发团队进行改进，遂有此名。yum的宗旨是自动化地升级，安装/移除rpm包，收集rpm包的相关信息，检查依赖性并自动提示用户解决。yum的关键之处是要有可靠的repository，顾名思义，这是软件的仓库，它可以是http或ftp站点， 也可以是本地软件池，但必须包含rpm的header， header包括了rpm包的各种信息，包括描述，功能，提供的文件，依赖性等.正是收集了这些 header并加以分析，才能自动化地完成余下的任务。<br>1).yum的一切配置信息都储存在一个叫yum.conf的配置文件中，通常位于/etc目 录下，这是整个yum系统的重中之重，我在的F9中查看了这一文件，大家一起来看下：<br>[hanlong@localhost F9常用文档]$ sudo more /etc/yum.conf<br>[main]<br>cachedir=/var/cache/yum<br>keepcache=0<br>debuglevel=2<br>logfile=/var/log/yum.log<br>exactarch=1<br>obsoletes=1<br>gpgcheck=1<br>plugins=1<br>metadata_expire=1800</p>
+<h1 id="PUT-YOUR-REPOS-HERE-OR-IN-separate-files-named-file-repo"><a href="#PUT-YOUR-REPOS-HERE-OR-IN-separate-files-named-file-repo" class="headerlink" title="PUT YOUR REPOS HERE OR IN separate files named file.repo"></a>PUT YOUR REPOS HERE OR IN separate files named file.repo</h1><h1 id="in-etc-yum-repos-d"><a href="#in-etc-yum-repos-d" class="headerlink" title="in /etc/yum.repos.d"></a>in /etc/yum.repos.d</h1><p>下面简单的对这一文件作简要的说明：</p>
+<p>cachedir：yum缓存的目录，yum在此存储下载的rpm包和数据库，一般是/var/cache/yum。<br>debuglevel：除错级别，0──10,默认是2<br>logfile：yum的日志文件，默认是/var/log/yum.log。<br>exactarch，有两个选项1和0,代表是否只升级和你安装软件包cpu体系一致的包，如果设为1，则如你安装了一个i386的rpm，则yum不会用686的包来升级。<br>gpgchkeck= 有1和0两个选择，分别代表是否是否进行gpg校验，如果没有这一项，默认好像也是检查的。</p>
+<p>2).好了，接下来就是yum的使用了，首先用yum来升级软件，yum的操作大都须有超级用户的权限，当然可以用sudo。<br>yum update，这一步是必须的，yum会从服务器的header目录下载rpm的header，放在本地的缓存中，这可能会花费一定的时间，但比起yum 给我们带来方便，这些时间的花费又算的了什么呢？header下载完毕，yum会判断是否有可更新的软件包，如果有，它会询问你的意见，是否更新，还是说 y吧，把系统始终up to date总是不错的，这时yum开始下载软件包并使用调用rpm安装，这可能要一定时间，取决于要更新软件的数目和网络状况，万一网络断了，也没关系，再 进行一次就可以了。升级完毕，以后每天只要使用yum check-update检查一下有无跟新，如果有，就用yum update进行跟新，时刻保持系统为最新，堵住一切发现的漏洞。用yum update packagename 对某个单独包进行升级。</p>
+<p>现在简单的把yum软件升级的一些命令罗列一下：</p>
+<p>(更新：我在安装wine的时候是用rpm一个一个安装的，先安装以来关系，然后在安装wine的主包，但是刚刚在论坛上发现来一个好的帖子，就yum的本地安装。参数是-localinstall<br>$yum localinstall wine-<em><br>这样的话，yum会自动安装所有的依赖关系，而不用rpm一个一个的安装了，省了好多工作。<br>还有一个与他类似的参数：<br>$yum localupdate wine-</em><br>如果有wine的新版本，而且你也下载到来本地，就可以这样本地更新wine了。)</p>
+<p>1.列出所有可更新的软件清单<br>命令：yum check-update</p>
+<p>2.安装所有更新软件<br>命令：yum update</p>
+<p>3.仅安装指定的软件<br>命令：yum install</p>
+<p>4.仅更新指定的软件<br>命令：yum update</p>
+<p>5.列出所有可安裝的软件清单<br>命令：yum list</p>
+<p>3).使用yum安装和卸载软件，有个前提是yum安装的软件包都是rpm格式的。</p>
+<p>安装的命令是，yum install xxx，yum会查询数据库，有无这一软件包，如果有，则检查其依赖冲突关系，如果没有依赖冲突，那么最好，下载安装;如果有，则会给出提示，询问是否要同时安装依赖，或删除冲突的包，你可以自己作出判断<br>删除的命令是，yum remove xxx，同安装一样，yum也会查询数据库，给出解决依赖关系的提示。</p>
+<p>1.用YUM安装软件包<br>命令：yum install</p>
+<p>2.用YUM删除软件包<br>命令：yum remove</p>
+<p>4).用yum查询想安装的软件<br>我们常会碰到这样的情况，想要安装一个软件，只知道它和某方面有关，但又不能确切知道它的名字。这时yum的查询功能就起作用了。你可以用 yum search keyword这样的命令来进行搜索，比如我们要则安装一个Instant Messenger，但又不知到底有哪些，这时不妨用 yum search messenger这样的指令进行搜索，yum会搜索所有可用rpm的描述，列出所有描述中和messeger有关的rpm包，于是我们可能得到 gaim，kopete等等，并从中选择。<br>有时我们还会碰到安装了一个包，但又不知道其用途，我们可以用yum info packagename这个指令来获取信息。<br>1.使用YUM查找软件包<br>命令：yum search<br>2.列出所有可安装的软件包<br>命令：yum list<br>3.列出所有可更新的软件包<br>命令：yum list updates<br>4.列出所有已安装的软件包<br>命令：yum list installed<br>5.列出所有已安装但不在 Yum Repository 內的软件包<br>命令：yum list extras<br>6.列出所指定的软件包<br>命令：yum list 7.使用YUM获取软件包信息<br>命令：yum info 8.列出所有软件包的信息<br>命令：yum info<br>9.列出所有可更新的软件包信息<br>命令：yum info updates<br>10.列出所有已安裝的软件包信息<br>命令：yum info installed<br>11.列出所有已安裝但不在 Yum Repository 內的软件包信息<br>命令：yum info extras<br>12.列出软件包提供哪些文件<br>命令：yum provides</p>
+<p>5).清除YUM缓存<br>yum 会把下载的软件包和header存储在cache中，而不会自动删除。如果我们觉得它们占用了磁盘空间，可以使用yum clean指令进行清除，更精确的用法是yum clean headers清除header，yum clean packages清除下载的rpm包，yum clean all 清除所有<br>1.清除缓存目录(/var/cache/yum)下的软件包<br>命令：yum clean packages</p>
+<p>2.清除缓存目录(/var/cache/yum)下的 headers</p>
+<p>命令：yum clean headers</p>
+<p>3.清除缓存目录(/var/cache/yum)下旧的 headers</p>
+<p>命令：yum clean oldheaders</p>
+<p>4.清除缓存目录(/var/cache/yum)下的软件包及旧的headers</p>
+<p>命令：yum clean, yum clean all (= yum clean packages; yum clean oldheaders)</p>
+<p>以上所有命令参数的使用都可以用man来查看：<br>1、安装图形版yumex：yum install yumex。<br>2、安装额外的软件仓库：<br>rpm.livna.org 的软件包仓库:<br>rpm -ivh <a href="http://livna-dl.reloumirrors.net" target="_blank" rel="noopener">http://livna-dl.reloumirrors.net</a> … ease-7-2.noarch.rpm</p>
+<p>freshrpms.net 的软件包仓库:<br>rpm –ivh <a href="http://ftp.freshrpms.net/pub/fre" target="_blank" rel="noopener">http://ftp.freshrpms.net/pub/fre</a> … 1.1-1.fc.noarch.rpm</p>
+<p>3、安装最快源 yum install yum-fastestmirror</p>
+<p>资源真的是非常丰富，从Centos到Ubuntu，ISO镜像、升级包，应有尽有，上交的兄弟们真是幸福，羡慕啊。不过还好，我们好歹也算是在教育网内，凑合着也可以沾点光，下载一些。<br>网址为：<a href="ftp://ftp.sjtu.edu.cn/" target="_blank" rel="noopener">ftp://ftp.sjtu.edu.cn/</a></p>
+<p>相应的yum的repo为<br>[updates]<br>name=Fedora updates<br>baseurl=<a href="ftp://ftp.sjtu.edu.cn/fedora/linux/updates/$releasever/$basearch/" target="_blank" rel="noopener">ftp://ftp.sjtu.edu.cn/fedora/linux/updates/$releasever/$basearch/</a><br>enabled=1<br>gpgcheck=0<br>[fedora]<br>name=Fedora $releasever – $basearch<br>baseurl=<a href="ftp://ftp.sjtu.edu.cn/fedora/linux/releases/$releasever/Everything/$basearch/os/" target="_blank" rel="noopener">ftp://ftp.sjtu.edu.cn/fedora/linux/releases/$releasever/Everything/$basearch/os/</a><br>enabled=1<br>gpgcheck=1<br>gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora file:///etc/pki/rpm-gpg/RPM-GPG-KEY</p>
+<p>如果在机器上安装了apt管理器，则相应的源为<br>repomd <a href="ftp://ftp.sjtu.edu.cn/" target="_blank" rel="noopener">ftp://ftp.sjtu.edu.cn/</a> fedora/linux/updates/$(VERSION)/$(ARCH)/</p>
+<p>repomd <a href="ftp://ftp.sjtu.edu.cn/" target="_blank" rel="noopener">ftp://ftp.sjtu.edu.cn/</a> fedora/linux/releases/$(VERSION)/Everything/$(ARCH)/os/</p>
+<p>这与前面yum的源的格式上有一些差别，需要加以注意。<br>下面介绍一下fedora 下安装 scim</p>
+<p>1． 什么输入法适合我？<br>fcitx和scim是目前比较好的输入法， 但是他们的特点不同，fcitx只能输入中文，而scim可以根据需要，利用不同的码表达到中英日…等等各种语言的输入问题。如果你只懂中文，或者只会输 入英文&amp;中文，那么fcitx是一个不错的选择，因为它漂亮，小巧，实用。如果你还需要输入日文或者其他语言，那么你因该安装scim。通 过合理的配置，他能够让你像在windows里面一样，想输入什么语言就能输入什么语言，同一种语言想用什么输入法就用什么输入法。Scim的扩充性很 强，而且比较稳定，我就是选择的是scim.<br>2． 安装一个新输入法前需要哪些准备？<br>如果你选择fcitx或者scim，那么我建议你删除系统自带的中文输入法。方法如下：<br>rpm –qa | grep iiimf | xargs rpm –e<br>rpm –qa | grep Chinput| xargs rpm –e<br>如果有哪一行提示rpm: no packages given for erase那表示本身你的系统里面没有该输入法，不用担心，继续往下看就行了。<br>说 明：rpm –qa是列出所有安装的rpm包，grep iiimf是选择出其中名字含有iiimf的那些包，xargs rpm –e的意思是把前面列出的这些包删除掉。Xargs的作用就是把前面通过 | 传过来的数据作为下面命令的参数。这就好比一个过滤器，首先是放着所有的安装包，然后grep以后，只留下了含有某些特定关键字的rpm包，然后通过 xargs和rpm –e的组合运用，把剩下的这些含有某特定关键字的包删掉。这样就达到了删除该输入法及相关包的目的。下面的Chinput也是如此，在此不再重复。如果你还安装了其他输入法，比如你原来装的是fcitx，现在想装scim，那么你最好模仿上面的样子把fcitx删除，方法就是把iiimf的位置改成 fcitx就可以了。<br>在安装新输入法之前，最好这样做一下，因为多种输入法同时存在一个系统中没有什么好处，你只可能去用一个，而且他们同时存在可能有的时候会出现问题，想想也知道，会互相竞争嘛。所以在此以后，你应该保证系统里面已经没有中文输入法了。通过类似以下方式验证：<br>whereis fcitx<br>whereis scim<br>whereis miniChinput<br>…</p>
+<p>3． 输入法是何时被系统调用的？<br>很多人不知道输入法到底什么时候被load进来，不知道这个当然就不知道为什么有的时候呼不出输入法（因为可能根本没有调入）当然也不会知道如何配置能够符合自己的要求。<br>大 家都知道，linux下面比较常用的有两个桌面系统，gnome和kde，这都无所谓，他们其实都是架在X系统之上的。简单的说X系统就是一个最核心，也 是最底层的桌面系统，gnome也好，kde也罢，或者其他的什么fvwm之类的，都只不过是X系统和用户之间的另一层软件而已。所以要想达到不管使用什 么桌面系统，都能调入输入法，就是要在X系统启动的时候，让输入法也启动起来，那么这样之后，无论你使用的是gnome还是kde或者其他什么桌面，都能 够调入输入法。因为当轮到他们启动的时候，X系统已经启动好了，输入法已经被系统调入了。那么X系统又是如何启动的呢？让我们从startx开始说起。<br>无论你用什么桌面系统，都是通过startx启动的，那么startx究竟是什么呢？一个应用程序还是一个脚本文件？为什么它能够启动各种桌面系统，并且能够按照相应的配置文件来设置呢？带着疑问，我在console里面输入whereis startx.<br>在 找到了存放startx的路径以后，用编辑器打开它发现原来是一个脚本文件。这个脚本文件的内容可能根据发行版不同，会有差异，如果你懂一些shell的 语言，那么你可以尝试看看，不一定要全部看懂，但是你大致看过以后会发现最后有一个xinit的命令，然后跟着一些参数。我尝试在console下面输入 xinit(注意，不要在图形界面下做此操作)<br>发现图形界面启动拉，但是很丑陋，什么功能都没有，鼠标可以动，还有一个可以输入命令的小窗口。怎 么退出来？ctrl+alt+backspace. 原来如此，startx只是一个脚本，里面通过对一系列配置文件的分析设置，最终利用xinit命令启动图形界面。不管是kde还是gnome，都是在这 个脚本中完成的。那么让我们再打开startx脚本看看里面还做了些什么。你仔细看看，会发现有一个东西很显眼，就是/etc/X11/xinit /xinitrc，这个xinitrc好像很眼熟，在配置输入法的其他贴中总是看到，这里出现了肯定是里面运行了这个脚本。再看其他的一些东西，其实都是利用shell配置出一个xinit启动的参数，用来配置桌面系统用的，不用管它。目前已知的就是startx的时候它会去执行一个/etc/X11 /xinit/xinitrc的脚本，让我们打开来看看里面有什么。<br>打开一看，其中一段我觉得最有价值，是一个for循环，他依次执行了/etc /X11/xinit/xinitrc.d/下面的所有脚本。你可以耐心的找一下，一定可以发现。那么这个目录里面有些什么内容呢？有一个文件看名字就知道和输入相关，他叫xinput。等等，让我们理一下，是怎么从startx到xinput的。<br>首先是执行startx这个脚本文件，里面他会执行xinitrc这个脚本，然后xinitrc脚本里面的，叫xinput。OK, 我们继续，打开xinput看看。</p>
+<p>4.安装软件包</p>
+<p>rpm -Uvh scim-0.8.2-1.i586.rpm<br>rpm -Uvh scim-chinese-0.2.6-1.i586.rpm</p>
+<p>5.修改配置文件</p>
+<p>接下来重要的一步就是，修改一下<br>/etc /X11/xinit/xinitrc.d/xinput文件，让SCIM在X启动的时候也启动。我看到网上很多文章也说过，但总是不得要领，经过自己试 验，最简单的就是把xinput文件里的Chinput全部替换为SCIM，chinput替换为scim，保存重启X就可以了。<br>zh_CN*)<br>if [ -e /usr/bin/scim ]; then<br>XIM=”SCIM”<br>elif [ -e /usr/X11R6/bin/xcin ] ; then<br>export LC_CTYPE=zh_CN.GB2312<br>XIM=”xcin-zh_CN.GB2312″<br>fi<br>;;</p>
+<p>…………………………</p>
+<p>SCIM)<br>XIM_PROGRAM=scim<br>XIM_ARGS=”-d”<br>;;</p>
+<p>然后修改/etc/gtk-2.0/gtk.immodules，找到这一行:<br>“xim” “X Input Method” “gtk20″ “/usr/share/locale” “ko:ja:zh”<br>改为：<br>“xim” “X Input Method” “gtk20″ “/usr/share/locale” “en:ko:ja:zh”<br>可能表示输入英文时也使用该输入法</p>
+<p>安装完毕后运行scim-setup,将输入法的切换键改为ctrl+space</p>
+<p>yum常用命令总结<br>主要功能是更方便的添加/删除/更新RPM包.<br>它能自动解决包的倚赖性问题.<br>它能便于管理大量系统的更新问题<br>一、yum list|more               列出所有包文件，可搭配grep查询软件包，如yum list |grep kernel<br>二、yum info xxx                 显示包xxx详细信息，即使xxx没有安装<br>三、yum update kernel       用yum升级内核<br>四、yum update                 全面升级系统<br>五、yum list available         列出升级源上所有可以安装的包(List all packages in the yum repositories available to be installed.)<br>六、yum list updates           列出升级源上所有可以更新的包(List all packages with updates available in the yum repositories.)<br>七、yum list installed          列出已经安装的包<br>八、yum install xxx              安装xxx包<br>九、yum update xxx            升级xxx包<br>十、yum remove xxx            删除xxx包</p>
+<p><hr></p>
+<p></p><h5>转载至-<a title="" href="http://www.ihref.com/" target="_blank" rel="noopener">爱分享</a>–支持原创</h5><p></p>
+<p></p><h5 style="text-align: center;">联系我<a href="mailto:--strivedeer@163.com" target="_blank" rel="noopener">--strivedeer@163.com</a></h5><br><p></p>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #6e6e6e;font-size:15px;">本文结束<i class="far fa-laugh-beam"></i>感谢您的阅读,本文原创–支持原创
+        </div>
+    
+</div>
+      
+    </div>
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>顺便打点赏吧~  有问题请联系我--strivedeer@163.com</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Antler 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="Antler 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/linux/" rel="tag"><i class="fa fa-tag"></i> linux</a>
+          
+            <a href="/tags/yum/" rel="tag"><i class="fa fa-tag"></i> yum</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/05/14/CentOS+Postfix+Dovecot+Postfixadmin+Roundcube邮件服务器配置POP3+IMAP+SMTP/" rel="prev" title="CentOS+Postfix+Dovecot+Postfixadmin+Roundcube邮件服务器配置POP3+IMAP+SMTP">
+                CentOS+Postfix+Dovecot+Postfixadmin+Roundcube邮件服务器配置POP3+IMAP+SMTP <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zOTg3NC8xNjQwMQ"></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="Antler">
+            
+              <p class="site-author-name" itemprop="name">Antler</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">44</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">45</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/StriveDeer" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://gitee.com/antlerR/" target="_blank" title="Gitee">
+                      
+                        <i class="fa fa-fw fa-git"></i>Gitee</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:strivedeer@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#PUT-YOUR-REPOS-HERE-OR-IN-separate-files-named-file-repo"><span class="nav-number">1.</span> <span class="nav-text">PUT YOUR REPOS HERE OR IN separate files named file.repo</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#in-etc-yum-repos-d"><span class="nav-number">2.</span> <span class="nav-text">in /etc/yum.repos.d</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">2.0.0.0.1.</span> <span class="nav-text">转载至-爱分享–支持原创</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">2.0.0.0.2.</span> <span class="nav-text">联系我--strivedeer@163.com</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+
+  <i class="fa fa-heart" aria-hidden="true">IBiJi</i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Antler</span>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+<script src="https://s95.cnzz.com/z_stat.php?id=1260533060&web_id=1260533060" language="JavaScript"></script>
+
+  
+</div>
+
+
+  <span class="post-meta-divider"> </span>
+
+
+
+
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共48.8k字</span>
+</div>
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?487423740050432cdb057a9a3236f717";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

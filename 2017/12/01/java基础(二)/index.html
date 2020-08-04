@@ -1,0 +1,1469 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN,default">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="java,基础,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="BiJi | 爱你如初" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="课程目标: 1. 了解关键字的概念及特点.了解保留字 2. 熟练掌握标识符的含义,特点,可使用字符,及注意事项 3. 了解常量的概念,进制,进制之间相互转换,了解有符号标识法的运算方式 4. 掌握变量的概念及定义过程 5. 掌握java中的数据类型及注意事项 6. 掌握强制类型转换的格式">
+<meta name="keywords" content="java,基础">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java基础（二）">
+<meta property="og:url" content="http://www.ibiji.top/2017/12/01/java基础(二)/index.html">
+<meta property="og:site_name" content="BiJi | 爱你如初">
+<meta property="og:description" content="课程目标: 1. 了解关键字的概念及特点.了解保留字 2. 熟练掌握标识符的含义,特点,可使用字符,及注意事项 3. 了解常量的概念,进制,进制之间相互转换,了解有符号标识法的运算方式 4. 掌握变量的概念及定义过程 5. 掌握java中的数据类型及注意事项 6. 掌握强制类型转换的格式">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-08-04T12:52:31.012Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="java基础（二）">
+<meta name="twitter:description" content="课程目标: 1. 了解关键字的概念及特点.了解保留字 2. 熟练掌握标识符的含义,特点,可使用字符,及注意事项 3. 了解常量的概念,进制,进制之间相互转换,了解有符号标识法的运算方式 4. 掌握变量的概念及定义过程 5. 掌握java中的数据类型及注意事项 6. 掌握强制类型转换的格式">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.ibiji.top/2017/12/01/java基础(二)/">
+
+
+
+
+
+  <title>java基础（二） | BiJi | 爱你如初</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">BiJi | 爱你如初</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">笔迹 · 鱼沈雁杳天涯路，始信人间别离苦</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-首页">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-关于">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-分类">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-归档">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-留言">
+          <a href="/comment/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-comment"></i> <br>
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.ibiji.top/2017/12/01/java基础(二)/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Antler">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BiJi | 爱你如初">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">java基础（二）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-01T22:00:30+08:00">
+                2017-12-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/基础/" itemprop="url" rel="index">
+                    <span itemprop="name">基础</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>课程目标:</p>
+<pre><code>1. 了解关键字的概念及特点.了解保留字
+2. 熟练掌握标识符的含义,特点,可使用字符,及注意事项
+3. 了解常量的概念,进制,进制之间相互转换,了解有符号标识法的运算方式
+4. 掌握变量的概念及定义过程
+5. 掌握java中的数据类型及注意事项
+6. 掌握强制类型转换的格式
+</code></pre><a id="more"></a>
+<h3 id="一、关键字"><a href="#一、关键字" class="headerlink" title="一、关键字"></a>一、关键字</h3><pre><code>1、概念:
+    被java语言赋予特定含义的单词
+2、特点：
+    所有的字母都是小写的，在一些高级开发工具中，会有特殊颜色显示
+3、保留字：
+    目前版本中还不是关键字，但是有可能在后续版本中升级为关键字goto  const
+4、注意事项：
+    在一些资料中，可能会把关键字称为保留字
+</code></pre><h3 id="二、标识符"><a href="#二、标识符" class="headerlink" title="二、标识符"></a>二、标识符</h3><pre><code>1. 概念：给类、接口、方法、变量起名字的字符序列
+2. 组成规则：英文字母的大小写
+    数字
+    ￥、_
+3. 注意事项：
+不能以数字开头
+    不能是java中的关键字（包括保留字）
+    严格区分大小写（hello != Hello）
+
+上述为强制要求，否则编译不通过
+
+
+4. 注意点：见名知意
+5. 约定俗称的命名规则：
+    ａ.类和接口：大驼峰命名法
+        首字母大写，多个单词，每个单词的首字母都大写
+        eg：HelloWorld，StudentManagementSystem
+    b.方法和变量：小驼峰命名法
+        首字母小写，多个单词，每个单词的首字母都大写
+        eg：main，sayHello
+    c.包：本质是文件夹（方便管理，解决同名文件）
+        域名反转，用 . 隔开
+    d.常量：java程序运行的过程中，值保持不变的量
+         所有的字母都大写，多个单词用 _ 隔开
+</code></pre><h3 id="三、常量"><a href="#三、常量" class="headerlink" title="三、常量"></a>三、常量</h3><pre><code>1. 概念：在程序中运行的过程中其值保持不变的量
+2. 分类：
+    a.字面值常量：
+            字符串常量-用双引号括起来的内容
+            整数常量-所有的整数
+            小数常量-所有的小数
+            字符常量-用单引号括起来的内容，只能有一个字符（字母、数字、符号、中文）
+            布尔常量-true、false
+            空常量-null
+    b.自定义常量：
+            final 修饰的变量
+
+3. print 和 println的区别
+    print打印完内容不换行
+    println打印完内容自动换行
+</code></pre><h3 id="四、进制："><a href="#四、进制：" class="headerlink" title="四、进制："></a>四、进制：</h3><pre><code>1. 逢几进一：计算机中的都是二进制
+2. 常用的进制有四种：
+    二进制：        0,1            0b        0，1，10，11，100.....
+    八进制：        0-7            0        0,1,....7,10,.....17,20...27,30...77,100....
+    十进制：        0-9            默认    0,1....9,10...
+    十六进制：        0-9,a-f        0x        0,1...9,a,b,c,d,e,f,10.......
+3. 二进制之间的相互转换：
+    其他进制转成10进制：
+        1234 = 1000+200+30+4
+             = 1*10^3 + 2*10^2 + 3*10^1 + *4 *10^0
+        结论：每一位上的数乘以对应进制的位数减一次方，做累加
+    0b10100 –&gt; 10进制
+        0b10100 = 1 *2^4 + 0* 2^3 + 1 *2^2 + 0*2^1 + 0*2^0
+                = 16 + 0 + 4 + 0 + 0 + 0
+                = 20
+    0137 –&gt; 10进制
+        0137 = 1 * 8^2 + 3 * 8^1 + 7 *8^0
+             = 95
+    0x13d -&gt; 10进制
+        0x123d = 1*16^2 + 3*16^1 + 13*16^0
+               = 256+61
+               = 317
+
+4. 十进制之间的相互转换：
+    结论：转成几进制就处以几，直到商为0，把余数反转
+
+    76 -&gt;2 进制
+    76/2------0
+    38/2------0
+    19/2------0
+    9/2------1
+</code></pre><p>4/2——1<br>2/2——0<br>1/2——1<br>二进制：1001100<br>    转八进制：<br>        76/8—–0<br>        9/8——4<br>        1/8——1<br>           ——1</p>
+<pre><code>5. 快速转换法：
+a. 8421码：
+</code></pre><p>用于2进制和10进制之间的相互转换<br>            8位二进制，每一位都是1，代表的数是几<br>            0b 1111 1111<br>-&gt;<br>    128 64 32 16    8 4 2 1</p>
+<pre><code>0b10011001
+</code></pre><p>-&gt; 10进制<br>            128+16+8+1 = 153</p>
+<pre><code>    0b11101100
+    -&gt; 10进制
+    =128+64+32+12=236
+
+b. 十进制转二进制，和码表逐位相减，能减是1，不能减是0
+</code></pre><p>93 = 0b0101 1101</p>
+<pre><code>c. 二进制和八进制，十六进制之间的转换
+    三位二进制        000-111
+    一位八进制        0-7
+    二进制和八进制相互转换：
+        二转八：三位二进制转换成一位的八进制
+        八转二：把一位的八进制拆成三位的二进制
+    0b10101010101110
+    -&gt;
+    0b010 101 010 101 110 = 025256        
+    0b1 110 101 011 110 = 016536
+
+    07764 = 0b 111111110100
+</code></pre><p>0752=0b111101010<br>    d. 二进制和十六进制相互转换<br>        0000-1111    0-15<br>        0-f              0-15</p>
+<pre><code>二转十六：把四位的进制转成一位的十六进制
+十六转二：把一位的十六进制拆成四位的二进制
+
+0b11 1010 1011 1111 0101 = 0x3abf5
+0b1 0101 1110 1011 = 0x15db
+
+0x7ade
+</code></pre><p>-&gt;2进制<br>0b0111 1010 1101 1110<br>    e. x进制和y进制相互转换<br>        六进制转七进制：<br>            中间只用十进制作为桥梁</p>
+<h3 id="五、有符号标识法"><a href="#五、有符号标识法" class="headerlink" title="五、有符号标识法"></a>五、有符号标识法</h3><pre><code>7： 0000 0111
+为了解决负数在计算机中的存储，出现：原码，反码，补码
+
+原码：
+用最高位代表符号,其他位代表数值,正数的符号位是0,负数的符号位是1
+都使用八位的二进制来表示
+-7：1000 0111
+
+反码: 
+正数的反码和原码相同,负数的反码,符号位不变,其他位取反
+7的反码： 0 000 0111
+-7的反码：1 111 1000
+
+补码：
+正数的补码和原码相同,负数的补码,在反码的基础上,末位加1
+        7的补码： 0 000 0111
+        -7的补码：1 111 1001
+
+计算机中最终存储的都是二进制的补码
+</code></pre><h3 id="六、变量"><a href="#六、变量" class="headerlink" title="六、变量"></a>六、变量</h3><pre><code>1. 概念：
+</code></pre><p>在java程序运行的过程中,其值可以在一定范围内发生变化的量</p>
+<pre><code>2. 定义格式：
+    数据类型  变量名 = 初始化值;
+    数据类型：    整数：  int
+                字符串：String
+    变量名：小驼峰
+    初始值：变量的初始化值
+3. 变量的声明格式:    
+    数据类型  变量名;
+    int max;
+
+4. 注意事项:
+    1. 定义在方法中的变量叫做局部变量,局部变量不赋初值不能使用
+2. 变量所在的大括号叫做变量的作用域,同一个作用域中不能定义多个名字相同的变量,但是可以重新赋值
+    3. 同一行可以定义多个变量,但是不建议这么使用,可读性查
+</code></pre><h3 id="七、数据类型"><a href="#七、数据类型" class="headerlink" title="七、数据类型"></a>七、数据类型</h3><pre><code>1. 分类和范围：
+a. 基本数据类型
+        四类八种
+            整数：
+                byte、short、int、long
+            小数：
+                float、double
+            字符：
+                char
+            布尔：
+                boolean
+</code></pre><p>b. 引用数据类型:<br>            类、接口、数组、String…<br>除了基本数据类型以外的所有类型</p>
+<pre><code>基本数据类型的范围
+类型        字节        位数      默认值              范围
+byte         1         8         0            -128~127            -2^7 ---2^7-1
+short        2         16        0            -32768~32767        -2^15---2^15-1
+int          4         32        0            -2147483648~2147483647    
+long         8         64        0            -9223372036854775808~9223372036854775807
+float        4         32        0.0            -3.4E38~3.4028235E38
+double       8         64        0.0            -1.79E-308~1.7976931348623157E308
+char         2         16        \u0000        0~65535
+boolean      1          8        false        true或false
+
+
+
+        bit: 一个二进制位   0,1
+        byte(字节):  8个二进制位  2^8  = 256
+        1kb = 1024byte
+        1mb = 1024kb
+        1gb = 1024mb
+        1tb = 1024gb
+        1pb = 1024tb
+        1eb = 1024pb
+        1zb = 1024eb
+        1yb = 1024zb
+
+2. 注意事项:
+    a. 整数的默认类型是int ,小数的默认类型是double
+    b. 定义float类型的小数,需要在小数的后面加一个F(f)
+    c. 定义byte,short类型的整数时, 如果等号右边的数值在左边类型的范围之内,则可以直接赋值
+    d. 定义long类型的变量时,如果等号右边的值在int的范围之内,则可以直接赋值.如果超出了int的范围
+        需要在数的末尾加 L,推荐使用大写
+3. 默认值
+    a. 定义在类中方法外的变量才有默认值,局部变量是没有默认值的,静态的方法中只能调用外部静态的变量
+4. 运算规则
+
+    a. byte,short,char 不能直接做运算,做运算的时候需要转成int
+    b. 定义byte,short,类型的变量的时候, 如果等号右边都是常量,看其结果是否在左边类型的范围之内,在就可以直接赋值
+       如果等号右边存在变量,按照上面的规则进行运算,如果结果类型比左边的范围大,则不能直接赋值
+
+5. 默认转换
+    a. 可以把一个long类型的值赋值给float类型的变量,因为float的最大值远大于long的最大值
+            float f = 123L; 正确的
+            float f1= 123;  正确的
+            float f2 = 123.1; 错误的,加 f
+
+            byte,short,char -&gt;int -&gt;long - &gt;float -&gt; double
+
+    b. 通过程序演示,发现可以把一个8字节的long类型数值赋值给4个字节的float类型变量:
+        float 3.4*10 ^38
+        long:  2^63 -1
+
+    3.4*10^38 &gt; 3.4*8^38 = 3.4*(2^3)^38  =  3.4*2^114     2^63
+    通过最大值的比较,得出结论, float的最大值远大于long的最大值
+    所以我们可以把long赋值给float类型的变量    
+
+6.char类型
+        a. char类型的变量直接使用的时候,使用的是他所代表的符号,参与运算的时候,用的是他在码表中的编号
+        b.    char 占两个字节（0-65535），用的是Unicode
+            utf-8:表示英文和数字用1一个字节，
+gbk：表示英文和数字用一个字节，中文用两个字节
+char:类型直接打印，用的是她所代表的字符，参与运算，用的是底层的编码
+定义char类型：
+    char ch = ‘a’；
+
+                System.out.println(&apos;z&apos; + 0);//122
+
+                char ch2 = 97;
+                System.out.println(ch2);//a
+
+
+7.加法运算
+        a. 字符串和任意类型做加法运算,得到的都是字符串,做拼接
+        b. 运算的顺序是从左往右,右括号先算括号里的
+        c. 布尔类型不能和其他基本数据类型做运算
+        d. +的用法:
+            正号
+            加法运算
+            字符串的连接
+</code></pre><p>###八. 强制类型转换        </p>
+<pre><code>1. 强制类型转换的格式:
+目标类型  变量名  = (目标类型) 要转的值(常量或变量);
+
+a. 基本数据类型:  
+</code></pre><p>除了boolean 类型以外,其他7中类型都可以 互相转换<br>                        一般是在把大类型转成小类型的时候用强转</p>
+<pre><code>b. 引用数据类型:
+
+  必须具备子父类的关系        向下转型
+</code></pre>
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #6e6e6e;font-size:15px;">本文结束<i class="far fa-laugh-beam"></i>感谢您的阅读,本文原创–支持原创
+        </div>
+    
+</div>
+      
+    </div>
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>顺便打点赏吧~  有问题请联系我--strivedeer@163.com</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Antler 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="Antler 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag"><i class="fa fa-tag"></i> java</a>
+          
+            <a href="/tags/基础/" rel="tag"><i class="fa fa-tag"></i> 基础</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/01/java基础(一)/" rel="next" title="java基础（一）">
+                <i class="fa fa-chevron-left"></i> java基础（一）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/12/02/java基础(四)/" rel="prev" title="java基础（四）">
+                java基础（四） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zOTg3NC8xNjQwMQ"></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="Antler">
+            
+              <p class="site-author-name" itemprop="name">Antler</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">44</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">45</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/StriveDeer" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://gitee.com/antlerR/" target="_blank" title="Gitee">
+                      
+                        <i class="fa fa-fw fa-git"></i>Gitee</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:strivedeer@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、关键字"><span class="nav-number">1.</span> <span class="nav-text">一、关键字</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、标识符"><span class="nav-number">2.</span> <span class="nav-text">二、标识符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、常量"><span class="nav-number">3.</span> <span class="nav-text">三、常量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、进制："><span class="nav-number">4.</span> <span class="nav-text">四、进制：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、有符号标识法"><span class="nav-number">5.</span> <span class="nav-text">五、有符号标识法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#六、变量"><span class="nav-number">6.</span> <span class="nav-text">六、变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#七、数据类型"><span class="nav-number">7.</span> <span class="nav-text">七、数据类型</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+
+  <i class="fa fa-heart" aria-hidden="true">IBiJi</i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Antler</span>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+<script src="https://s95.cnzz.com/z_stat.php?id=1260533060&web_id=1260533060" language="JavaScript"></script>
+
+  
+</div>
+
+
+  <span class="post-meta-divider"> </span>
+
+
+
+
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共48.8k字</span>
+</div>
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?487423740050432cdb057a9a3236f717";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

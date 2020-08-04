@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN,default">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="linux,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="BiJi | 爱你如初" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="cpustat 是 Linux 下一个强大的系统性能测量程序，它用 Go 编程语言 编写。它通过使用 “用于分析任意系统的性能的方法(USE)”，以有效的方式显示 CPU 利用率和饱和度。 它高频率对系统中运行的每个进程进行取样，然后以较低的频率汇总这些样本。例如，它能够每 200ms 测量一次每个进程，然后每 5 秒汇总这些样本，包括某些度量的最小/平均/最大值(min/avg/max)。 c">
+<meta name="keywords" content="linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在Linux中安装和使用cpustat">
+<meta property="og:url" content="http://www.ibiji.top/2016/08/20/在Linux中安装和使用cpustat/index.html">
+<meta property="og:site_name" content="BiJi | 爱你如初">
+<meta property="og:description" content="cpustat 是 Linux 下一个强大的系统性能测量程序，它用 Go 编程语言 编写。它通过使用 “用于分析任意系统的性能的方法(USE)”，以有效的方式显示 CPU 利用率和饱和度。 它高频率对系统中运行的每个进程进行取样，然后以较低的频率汇总这些样本。例如，它能够每 200ms 测量一次每个进程，然后每 5 秒汇总这些样本，包括某些度量的最小/平均/最大值(min/avg/max)。 c">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://r.photo.store.qq.com/psb?/V11xb7WY1qiVF2/Q4AQ19SkaMVzqpzYUeptM6urZBqZ3O.jcmWhtss47Do!/r/dLMAAAAAAAAA">
+<meta property="og:image" content="http://s5.51cto.com/wyfs02/M00/93/34/wKioL1kJTPSz3Se1AABfyz4rwKw958.png">
+<meta property="og:image" content="https://dn-linuxcn.qbox.me/data/attachment/album/201705/01/213112uzni16im1vccv6vn.png">
+<meta property="og:image" content="https://dn-linuxcn.qbox.me/data/attachment/album/201705/01/213114bvzrwvu884nuyynu.png">
+<meta property="og:updated_time" content="2020-08-04T12:52:31.019Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="在Linux中安装和使用cpustat">
+<meta name="twitter:description" content="cpustat 是 Linux 下一个强大的系统性能测量程序，它用 Go 编程语言 编写。它通过使用 “用于分析任意系统的性能的方法(USE)”，以有效的方式显示 CPU 利用率和饱和度。 它高频率对系统中运行的每个进程进行取样，然后以较低的频率汇总这些样本。例如，它能够每 200ms 测量一次每个进程，然后每 5 秒汇总这些样本，包括某些度量的最小/平均/最大值(min/avg/max)。 c">
+<meta name="twitter:image" content="http://r.photo.store.qq.com/psb?/V11xb7WY1qiVF2/Q4AQ19SkaMVzqpzYUeptM6urZBqZ3O.jcmWhtss47Do!/r/dLMAAAAAAAAA">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.ibiji.top/2016/08/20/在Linux中安装和使用cpustat/">
+
+
+
+
+
+  <title>在Linux中安装和使用cpustat | BiJi | 爱你如初</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">BiJi | 爱你如初</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">笔迹 · 鱼沈雁杳天涯路，始信人间别离苦</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-首页">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-关于">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-分类">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-归档">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-留言">
+          <a href="/comment/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-comment"></i> <br>
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.ibiji.top/2016/08/20/在Linux中安装和使用cpustat/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Antler">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BiJi | 爱你如初">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">在Linux中安装和使用cpustat</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-08-20T16:41:30+08:00">
+                2016-08-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/转载/" itemprop="url" rel="index">
+                    <span itemprop="name">转载</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img class="alignnone size-medium" src="http://r.photo.store.qq.com/psb?/V11xb7WY1qiVF2/Q4AQ19SkaMVzqpzYUeptM6urZBqZ3O.jcmWhtss47Do!/r/dLMAAAAAAAAA" width="451" height="234"></p>
+<p>cpustat 是 Linux 下一个强大的系统性能测量程序，它用 Go 编程语言 编写。它通过使用 “用于分析任意系统的性能的方法(USE)”，以有效的方式显示 CPU 利用率和饱和度。</p>
+<p>它高频率对系统中运行的每个进程进行取样，然后以较低的频率汇总这些样本。例如，它能够每 200ms 测量一次每个进程，然后每 5 秒汇总这些样本，包括某些度量的最小/平均/最大值(min/avg/max)。</p>
+<p>cpustat 能用两种方式输出数据：定时汇总的纯文本列表和每个取样的彩色滚动面板。<br><a id="more"></a><br><strong>如何在 Linux 中安装 cpustat</strong></p>
+<p>为了使用 cpustat，你的 Linux 系统中必须安装有 Go 语言(GoLang)，如果你还没有安装它，点击下面的链接逐步安装 GoLang：</p>
+<p>在 Linux 下安装 GoLang(Go 编程语言)</p>
+<p>安装完 Go 以后，输入下面的 go get 命令安装 cpustat，这个命令会将 cpustat 二进制文件安装到你的 GOBIN 变量(所指的路径)：</p>
+<p><ol><br>     <li># go get github.com/uber-common/cpustat</li><br></ol><br><strong>如何在 Linux 中使用 cpustat</strong></p>
+<p>安装过程完成后，如果你不是以 root 用户控制系统，像下面这样使用 sudo 命令获取 root 权限运行 cpustat，否则会出现下面显示的错误信息：</p>
+<p><ol><br>     <li>$ $GOBIN/cpustat</li><br>     <li>This program uses the netlink taskstats interface, so it must be run as root.</li><br></ol><br>注意：想要像你系统中已经安装的其它 Go 程序那样运行 cpustat，你需要把 GOBIN 变量添加到 PATH 环境变量。打开下面的链接学习如何在 Linux 中设置 PATH 变量。</p>
+<p><ul><br>     <li>学习如何在 Linux 中永久设置你的 $PATH 变量</li><br></ul><br>cpustat 是这样工作的：在每个时间间隔查询 /proc 目录获取当前进程 ID 列表，然后：</p>
+<p><ul><br>     <li>对于每个 PID，读取 /proc/pid/stat，然后计算和前一个样本的差别。</li><br>     <li>如果是一个新的 PID，读取 /proc/pid/cmdline。</li><br>     <li>对于每个 PID，发送 netlink 消息获取 taskstat，计算和前一个样本的差别。</li><br>     <li>读取 /proc/stat 获取总的系统统计信息。</li><br></ul><br>根据获取所有这些统计信息所花费的时间，会调整每个休息间隔。另外，通过每次取样之间实际经过的时间，每个样本也会记录它用于测量的时间。这可用于计算 cpustat 自身的延迟。</p>
+<p>当不带任何参数运行时，cpustat 默认会显示以下信息：样本间隔：200ms;汇总间隔：2s(10 个样本);显示前 10 个进程;用户过滤器：all;pid 过滤器：all。正如下面截图所示：</p>
+<p><ol><br>     <li>$ sudo $GOBIN/cpustat</li><br></ol><br><img class="aligncenter" src="http://s5.51cto.com/wyfs02/M00/93/34/wKioL1kJTPSz3Se1AABfyz4rwKw958.png" width="697" height="373"></p>
+<p></p><p style="text-align:center;">cpustat – 监控 Linux CPU 使用</p><br>在上面的输出中，之前显示的系统范围的度量字段意义如下：<p></p>
+<p><ul><br>     <li>usr - 用户模式运行时间占 CPU 百分比的 min/avg/max 值。</li><br>     <li>sys - 系统模式运行时间占 CPU 百分比的 min/avg/max 值。</li><br>     <li>nice - 用户模式低优先级运行时间占 CPU 百分比的 min/avg/max 值。</li><br>     <li>idle - 用户模式空闲时间占 CPU 百分比的 min/avg/max 值。</li><br>     <li>iowait - 等待磁盘 IO 的 min/avg/max 延迟时间。</li><br>     <li>prun - 处于可运行状态的 min/avg/max 进程数量(同“平均负载”一样)。</li><br>     <li>pblock - 被磁盘 IO 阻塞的 min/avg/max 进程数量。</li><br>     <li>pstat - 在本次汇总间隔里启动的进程/线程数目。</li><br></ul><br>同样还是上面的输出，对于一个进程，不同列的意思分别是：</p>
+<p><ul><br>     <li>name - 从 /proc/pid/stat 或 /proc/pid/cmdline 获取的进程名称。</li><br>     <li>pid - 进程 ID，也被用作 “tgid” (线程组 ID)。</li><br>     <li>min - 该 pid 的用户模式+系统模式时间的最小样本，取自 /proc/pid/stat。比率是 CPU 的百分比。</li><br>     <li>max - 该 pid 的用户模式+系统模式时间的最大样本，取自 /proc/pid/stat。</li><br>     <li>usr - 在汇总期间该 pid 的平均用户模式运行时间，取自 /proc/pid/stat。</li><br>     <li>sys - 在汇总期间该 pid 的平均系统模式运行时间，取自 /proc/pid/stat。</li><br>     <li>nice - 表示该进程的当前 “nice” 值，取自 /proc/pid/stat。值越高表示越好(nicer)。</li><br>     <li>runq - 进程和它所有线程可运行但等待运行的时间，通过 netlink 取自 taskstats。比率是 CPU 的百分比。</li><br>     <li>iow - 进程和它所有线程被磁盘 IO 阻塞的时间，通过 netlink 取自 taskstats。比率是 CPU 的百分比，对整个汇总间隔平均。</li><br>     <li>swap - 进程和它所有线程等待被换入(swap in)的时间，通过 netlink 取自 taskstats。Scale 是 CPU 的百分比，对整个汇总间隔平均。</li><br>     <li>vcx 和 icx - 在汇总间隔期间进程和它的所有线程自动上下文切换总的次数，通过 netlink 取自 taskstats。</li><br>     <li>rss - 从 /proc/pid/stat 获取的当前 RSS 值。它是指该进程正在使用的内存数量。</li><br>     <li>ctime - 在汇总间隔期间等待子进程退出的用户模式+系统模式 CPU 时间总和，取自 /proc/pid/stat。 注意长时间运行的子进程可能导致混淆这个值，因为只有在子进程退出后才会报告时间。但是，这对于计算高频 cron 任务以及 CPU 时间经常被多个子进程使用的健康检查非常有帮助。</li><br>     <li>thrd - 汇总间隔最后线程的数目，取自 /proc/pid/stat。</li><br>     <li>sam - 在这个汇总间隔期间该进程的样本数目。最近启动或退出的进程可能看起来比汇总间隔的样本数目少。</li><br></ul><br>下面的命令显示了系统中运行的前 10 个 root 用户进程：</p>
+<p><ol><br>     <li>$ sudo $GOBIN/cpustat -u root</li><br></ol><br><img class="size-medium aligncenter" src="https://dn-linuxcn.qbox.me/data/attachment/album/201705/01/213112uzni16im1vccv6vn.png" width="1326" height="713"></p>
+<p></p><p style="text-align:center;">查找 root 用户正在运行的进程</p><br>要想用更好看的终端模式显示输出，像下面这样用 -t 选项：<p></p>
+<p><ol><br>     <li>$ sudo $GOBIN/cpustat -u root -t</li><br></ol><br><img class="size-medium aligncenter" src="https://dn-linuxcn.qbox.me/data/attachment/album/201705/01/213114bvzrwvu884nuyynu.png" width="1348" height="580"></p>
+<p></p><p style="text-align:center;">root 用户正在运行的进程</p><br>要查看前 x 个进程(默认是 10)，你可以使用 -n 选项，下面的命令显示了系统中 正在运行的前 20 个进程：<p></p>
+<p><ol><br>     <li>$ sudo $GOBIN/cpustat -n 20</li><br></ol><br>你也可以像下面这样使用 -cpuprofile 选项将 CPU 信息写到文件，然后用 cat 命令查看文件：</p>
+<p><ol><br>     <li>$ sudo $GOBIN/cpustat -cpuprofile cpuprof.txt</li><br>     <li>$ cat cpuprof.txt</li><br></ol><br>要显示帮助信息，像下面这样使用 -h 选项：</p>
+<p><ol><br>     <li>$ sudo $GOBIN/cpustat -h</li><br></ol><br>可以从 cpustat 的 Github 仓库：<a href="https://github.com/uber-common/cpustat" target="_blank" rel="noopener">https://github.com/uber-common/cpustat</a> 查阅其它资料。</p>
+<p>就是这些!在这篇文章中，我们向你展示了如何安装和使用 cpustat，Linux 下的一个有用的系统性能测量工具。通过下面的评论框和我们分享你的想法吧。</p>
+<hr>
+
+<p>作者简介：</p>
+<p>Aaron Kili 是一个 Linux 和 F.O.S.S(Free and Open-Source Software) 爱好者，一个 Linux 系统管理员、web 开发员，现在也是 TecMint 的内容创建者，他喜欢和电脑一起工作，他相信知识共享。</p>
+<hr>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #6e6e6e;font-size:15px;">本文结束<i class="far fa-laugh-beam"></i>感谢您的阅读,本文原创–支持原创
+        </div>
+    
+</div>
+      
+    </div>
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>顺便打点赏吧~  有问题请联系我--strivedeer@163.com</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Antler 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="Antler 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/linux/" rel="tag"><i class="fa fa-tag"></i> linux</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/07/08/如何在Ubuntu上使用pm2和Nginx部署Node.js应用/" rel="next" title="如何在Ubuntu上使用pm2和Nginx部署Node.js应用">
+                <i class="fa fa-chevron-left"></i> 如何在Ubuntu上使用pm2和Nginx部署Node.js应用
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/12/01/java基础(三)/" rel="prev" title="java基础（三）">
+                java基础（三） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zOTg3NC8xNjQwMQ"></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="Antler">
+            
+              <p class="site-author-name" itemprop="name">Antler</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">44</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">45</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/StriveDeer" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://gitee.com/antlerR/" target="_blank" title="Gitee">
+                      
+                        <i class="fa fa-fw fa-git"></i>Gitee</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:strivedeer@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+
+  <i class="fa fa-heart" aria-hidden="true">IBiJi</i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Antler</span>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+<script src="https://s95.cnzz.com/z_stat.php?id=1260533060&web_id=1260533060" language="JavaScript"></script>
+
+  
+</div>
+
+
+  <span class="post-meta-divider"> </span>
+
+
+
+
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共48.8k字</span>
+</div>
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?487423740050432cdb057a9a3236f717";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

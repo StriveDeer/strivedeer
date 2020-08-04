@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN,default">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="linux,centos,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="BiJi | 爱你如初" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="之前一直使用Postfix+Courier+Sasl+Extmail 邮件服务器方案，并配置了MailDrop 做邮件转发和Mailman邮件列表，在两年多时间里，运行良好。可是现生产环境使用Nginx 越来越多，为了一个Webmail 单独配置Apache+Perl 资源开销大，Courier+Sasl 配置也相对比较繁琐，抽了两天时间，结合网上一些实例，对邮件服务器做了一些改进。 Doveco">
+<meta name="keywords" content="linux,centos">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CentOS+Postfix+Dovecot+Postfixadmin+Roundcube邮件服务器配置POP3+IMAP+SMTP">
+<meta property="og:url" content="http://www.ibiji.top/2016/05/14/CentOS+Postfix+Dovecot+Postfixadmin+Roundcube邮件服务器配置POP3+IMAP+SMTP/index.html">
+<meta property="og:site_name" content="BiJi | 爱你如初">
+<meta property="og:description" content="之前一直使用Postfix+Courier+Sasl+Extmail 邮件服务器方案，并配置了MailDrop 做邮件转发和Mailman邮件列表，在两年多时间里，运行良好。可是现生产环境使用Nginx 越来越多，为了一个Webmail 单独配置Apache+Perl 资源开销大，Courier+Sasl 配置也相对比较繁琐，抽了两天时间，结合网上一些实例，对邮件服务器做了一些改进。 Doveco">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-08-04T12:52:30.994Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CentOS+Postfix+Dovecot+Postfixadmin+Roundcube邮件服务器配置POP3+IMAP+SMTP">
+<meta name="twitter:description" content="之前一直使用Postfix+Courier+Sasl+Extmail 邮件服务器方案，并配置了MailDrop 做邮件转发和Mailman邮件列表，在两年多时间里，运行良好。可是现生产环境使用Nginx 越来越多，为了一个Webmail 单独配置Apache+Perl 资源开销大，Courier+Sasl 配置也相对比较繁琐，抽了两天时间，结合网上一些实例，对邮件服务器做了一些改进。 Doveco">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.ibiji.top/2016/05/14/CentOS+Postfix+Dovecot+Postfixadmin+Roundcube邮件服务器配置POP3+IMAP+SMTP/">
+
+
+
+
+
+  <title>CentOS+Postfix+Dovecot+Postfixadmin+Roundcube邮件服务器配置POP3+IMAP+SMTP | BiJi | 爱你如初</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">BiJi | 爱你如初</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">笔迹 · 鱼沈雁杳天涯路，始信人间别离苦</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-首页">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-关于">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-分类">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-归档">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-留言">
+          <a href="/comment/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-comment"></i> <br>
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.ibiji.top/2016/05/14/CentOS+Postfix+Dovecot+Postfixadmin+Roundcube邮件服务器配置POP3+IMAP+SMTP/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Antler">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BiJi | 爱你如初">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">CentOS+Postfix+Dovecot+Postfixadmin+Roundcube邮件服务器配置POP3+IMAP+SMTP</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-14T09:41:30+08:00">
+                2016-05-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index">
+                    <span itemprop="name">linux</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/centos/" itemprop="url" rel="index">
+                    <span itemprop="name">centos</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/centos/转载/" itemprop="url" rel="index">
+                    <span itemprop="name">转载</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>之前一直使用Postfix+Courier+Sasl+Extmail 邮件服务器方案，并配置了MailDrop 做邮件转发和Mailman邮件列表，在两年多时间里，运行良好。可是现生产环境使用Nginx 越来越多，为了一个Webmail 单独配置Apache+Perl 资源开销大，Courier+Sasl 配置也相对比较繁琐，抽了两天时间，结合网上一些实例，对邮件服务器做了一些改进。</p>
+<p>Dovecot 不仅可以做POP3,IMAP服务器，也可以用来做SMTP验证，省去了Cyrus Sasl，并且效率资源占用也相对Courier 好很多，同时支持LOGIN验证方式，可以满足Outlook,Foxmail 客户端登录访问，本文配置了SMTP发件认证，POP3接收认证，WEBMail 功能，邮件转发，防病毒未有进行配置。</p>
+<p></p><h2>软件包说明:</h2><br>Postfix-2.8.12.tar.gz Postfix MTA(邮件传输代理)<br><a id="more"></a><br>Dovecot-2.1.8.tar.gz IMAP 和 POP3 邮件服务器<p></p>
+<p>Postfixadmin-2.3.5.tar.gz 采用PHP编写的开源WEB邮箱及域名账号管理工具</p>
+<p>Roundcubemail-0.8.1.tar.gz 采用PHP编写的开源IMAP邮件WEB客户端</p>
+<p></p><h2>1.准备工作：</h2><br>安装配置在 CentOS 6.3 x64 最小化安装环境上进行，先安装好 Nginx(Apache)+PHP+MySQL，Roundcube 需要PHP IMAP扩展支持，如果在编译PHP时没开启IMAP支持，可以用下面的方法添加扩展<p></p>
+<p><pre class="brush: shell; gutter: true"><strong># yum install libc-client-devel libc-client</strong></pre><br>安装 php-imap 扩展依赖的的廉包</p>
+<p>进入到php源码包 imap 扩展库路径下 如 /opt/php-5.3.12/ext/imap 执行</p>
+<p><pre class="brush: shell; gutter: true"><strong># /usr/local/php/bin/phpize</strong></pre></p>
+<h1 id="configure-–with-php-config-usr-local-php-bin-php-config-–with-kerberos-–with-imap-ssl"><a href="#configure-–with-php-config-usr-local-php-bin-php-config-–with-kerberos-–with-imap-ssl" class="headerlink" title="./configure –with-php-config=/usr/local/php/bin/php-config –with-kerberos –with-imap-ssl"></a>./configure –with-php-config=/usr/local/php/bin/php-config –with-kerberos –with-imap-ssl</h1><p>检查系统配置过程中国如果提示出错，可以尝试将libc-client 库做个链接到lib 下</p>
+<p><pre class="brush: shell; gutter: true"><strong># ln -s /usr/lib64/libc-client.so /usr/lib/libc-client.so</strong></pre></p>
+<h1 id="make-amp-amp-make-install"><a href="#make-amp-amp-make-install" class="headerlink" title="make &amp;&amp; make install"></a>make &amp;&amp; make install</h1><p>安装后修改 php.ini 的 extension_dir路径 ，并加入 extension=”imap.so” 扩展</p>
+<p>卸载系统自带的sendmail 或 postfix</p>
+<p><pre><strong># yum remove sendmail postfix</strong></pre></p>
+<p></p><h2>2. 编译安装Postfix</h2><p></p>
+<p><pre class="brush: shell; gutter: true"><strong># yum -y install db4-devel</strong><br>//安装依赖的DB4开发包</pre></p>
+<p><strong># useradd -M -s /sbin/nologin postfix</strong></p>
+<h1 id="useradd-M-s-sbin-nologin-postdrop"><a href="#useradd-M-s-sbin-nologin-postdrop" class="headerlink" title="useradd -M -s /sbin/nologin postdrop"></a>useradd -M -s /sbin/nologin postdrop</h1><p>//添加Postfix,maildrop 用户</p>
+<p><strong># tar zxf postfix-2.8.12.tar.gz<br>cd postfix-2.8.12/<br>make makefiles ‘CCARGS=-DHAS_MYSQL -I/usr/local/mysql/include -DUSE_SASL_AUTH -DDEF_SERVER_SASL_TYPE=”dovecot”‘ ‘AUXLIBS=-L/usr/local/mysql/lib -lmysqlclient -lz -lm -lssl -lcrypto’<br></strong>//如果MySQL 安装在其他路径，请注意修改MySQL Include 和 lib 路径</p>
+<p><strong>#make<br><strong>#make install</strong></strong></p>
+<p><br>安装路径和参数配置</p>
+<p><em>install_root: / //相对目录</em></p>
+<p><em>tempdir: /tmp //临时目录</em></p>
+<p><em>config_directory: /etc/postfix //配置文件位置</em></p>
+<p><em>command_directory /usr/local/postfix/sbin //命令执行路径</em></p>
+<p><em>daemon_directory /usr/local/postfix/libexec //Daemon路径</em></p>
+<p><em>data_directory /var/lib/postfix //邮件数据</em></p>
+<p><em>html_directory no mail_owner postfix //postfix 所有者账号</em></p>
+<p><em>mailq_path /usr/bin/mailq //mailq 位置</em></p>
+<p><em>manpage_directory /usr/local/postfix/man //帮助文档</em></p>
+<p><em>newaliases_path /usr/bin/newaliases //newaliases 位置</em></p>
+<p><em>queue_directory /var/spool/postfix //队列路径</em></p>
+<p><em>readme_directory no</em></p>
+<p><em>sendmail_path /usr/sbin/sendmail //Sendmail 路径</em></p>
+<p><em>setgid_group: postdrop</em></p>
+<p></p><h2>3.配置Postfix</h2><br><strong># vi /etc/postfix/main.cf</strong> 查找并修改 mynetworks = all 否则SMTP发件认证不生效<p></p>
+<p>在最底部添加虚拟邮箱配置和验证设置</p>
+<p><pre class="brush: shell; gutter: true"><strong># Virtual mailbox settings.</strong><br>virtual_mailbox_base = /var/vmail<br>virtual_mailbox_maps = mysql:/etc/postfix/mysql_virtual_mailbox_maps.cf<br>virtual_mailbox_domains = mysql:/etc/postfix/mysql_virtual_domains_maps.cf<br>virtual_alias_maps = mysql:/etc/postfix/mysql_virtual_alias_maps.cf<br>virtual_uid_maps = static:邮件POSTFIX用户ID<br>virtual_gid_maps = static:邮件POSTFIX组ID<br>virtual_transport = virtual<br>message_size_limit = 10240000<br>virtual_mailbox_limit = 209715200<br>virtual_create_maildirsize = yes<br>virtual_mailbox_extended = yes<br>virtual_mailbox_limit_maps = mysql:/etc/postfix/mysql_virtual_limit_maps.cf<br>virtual_mailbox_limit_override = yes<br>virtual_maildir_limit_message = Sorry, the user’s maildir has exceeded the quota.<br>virtual_overquota_bounce = yes</pre></p>
+<h1 id="SASL-settings"><a href="#SASL-settings" class="headerlink" title="SASL settings"></a>SASL settings</h1><p>smtpd_sasl_auth_enable = yes<br>smtpd_sasl_local_domain = $mydomain<br>smtpd_sasl_security_options = noanonymous<br>smtpd_sasl_type = dovecot<br>smtpd_sasl_path = /var/lib/dovecot/run/dovecot/auth-login<br>broken_sasl_auth_clients = yes<br>smtpd_recipient_restrictions = permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination, reject_invalid_hostname, reject_non_fqdn_hostname, reject_non_fqdn_sender, reject_non_fqdn_recipient<br>virtual_uid_maps 和 virtual_gid_maps 改成postfix 用户的uid和gid 如果不知道ID，可用 id postfix 命令获取</p>
+<p>添加数据库查询配置文件，根据需要修改数据库用户名密码，主机名，数据库名配置信息，在后面创建MYSQL数据库，登录用户的时候需要用到。</p>
+<p>建立数据库别名查询配置文件</p>
+<p><strong>vi /etc/postfix/mysql_virtual_alias_maps.cf</strong></p>
+<p><pre class="brush: shell; gutter: true">user = postfix<br>password = postfixpassword<br>hosts = localhost<br>dbname = postfix<br>table = alias<br>select_field = goto<br>where_field = address<br>additional_conditions = and active = ‘1’</pre></p>
+<p>#query = SELECT goto FROM alias WHERE address=’%s’ AND active = ‘1’<br>建立数据库虚拟域查询配置文件</p>
+<p><strong>vi /etc/postfix/mysql_virtual_domains_maps.cf</strong></p>
+<p><pre class="brush: shell; gutter: true">user = postfix<br>password = postfixpassword<br>hosts = localhost<br>dbname = postfix<br>table = domain<br>select_field = domain<br>where_field = domain<br>additional_conditions = and active = ‘1’</pre></p>
+<p>#query = SELECT domain FROM domain WHERE domain=’%s’ AND active = ‘1’<br>建立数据库邮箱配额查询配置文件</p>
+<p><strong>vi /etc/postfix/mysql_virtual_mailbox_limit_maps.cf</strong></p>
+<p><pre class="brush: actionscript3; gutter: true">user = postfix<br>password = postfixpassword<br>hosts = localhost<br>dbname = postfix<br>table = mailbox<br>select_field = quota<br>where_field = username<br>additional_conditions = and active = ‘1’</pre></p>
+<p>#query = SELECT quota FROM mailbox WHERE username=’%s’ AND active = ‘1’<br>建立数据库虚拟邮箱查询配置文件</p>
+<p><strong>vi /etc/postfix/mysql_virtual_mailbox_maps.cf</strong></p>
+<p><pre class="brush: actionscript3; gutter: true">user = postfix<br>password = postfixpassword<br>hosts = localhost<br>dbname = postfix<br>table = mailbox<br>select_field = CONCAT(domain,’/‘,maildir)<br>where_field = username<br>additional_conditions = and active = ‘1’</pre></p>
+<p>#query = SELECT CONCAT(domain,’/‘,maildir) FROM mailbox WHERE username=’%s’ AND active = ‘1’<br>启动postfix</p>
+<p><pre class="brush: shell; gutter: true"><strong># /usr/local/postfix/sbin/postfix start</strong></pre></p>
+<p></p><h2>4.安装 Dovecot</h2><p></p>
+<p><pre class="brush: shell; gutter: true"><strong># tar zxf dovecot-2.1.8.tar.gz<br><strong>#cd dovecot-2.1.8</strong><br><strong>#./configure –prefix=/usr/local/dovecot –sysconfdir=/etc –localstatedir=/var –with-sql –with-mysql –with-zlib –with-ssl LDFLAGS=-L/usr/local/mysql/lib</strong><br></strong><br>//指定安装及配置文件路径<br>//如果mysql安装在其他位置，需要手动指定 mysql lib库路径</pre></p>
+<p><strong># make</strong><br><strong># make install</strong></p>
+<p><strong>cp -r /usr/local/dovecot/share/doc/dovecot/example-config/* /etc/dovecot/</strong><br>//复制配置文件示例到配置文件夹中，此步骤不是必须的，只是方便查阅，后面的配置不会用到这些文件</p>
+<p></p><h2>5. 配置 Doevcot</h2><br><strong>mv /etc/dovecot/dovecot.conf /etc/dovecot/dovecot.old</strong><p></p>
+<p>如果复制了示例配置，先改名备份</p>
+<p><strong>vi /etc/dovecot/dovecot.conf</strong></p>
+<p>建立新配置文件，加入以下内容，此配置文件只适用于 Doevcot 2.x 不能用于1.x</p>
+<p><pre class="brush: shell; gutter: true">rotocols = pop3 imap</pre></p>
+<h1 id="开启pop3-imap-listen"><a href="#开启pop3-imap-listen" class="headerlink" title="开启pop3 imap listen = *"></a>开启pop3 imap listen = *</h1><p> default_login_user=postfix<br> default_internal_user=postfix</p>
+<h1 id="使用postfix-用户"><a href="#使用postfix-用户" class="headerlink" title="使用postfix 用户"></a>使用postfix 用户</h1><p>disable_plaintext_auth = no<br> log_path = /var/log/dovecot.log</p>
+<h1 id="日志路径"><a href="#日志路径" class="headerlink" title="日志路径"></a>日志路径</h1><p>#info_log_path = /var/log/dovecot.info<br> log_timestamp = “%Y-%m-%d %H:%M:%S “<br> ssl = no mail_location = maildir:/var/vmail/%d/%u</p>
+<h1 id="邮件存储路径"><a href="#邮件存储路径" class="headerlink" title="邮件存储路径"></a>邮件存储路径</h1><p>mail_privileged_group = mail<br> first_valid_uid = 502</p>
+<h1 id="postfix-用户UID"><a href="#postfix-用户UID" class="headerlink" title="postfix 用户UID"></a>postfix 用户UID</h1><p> protocol pop3 {<br> pop3_uidl_format = %08Xu%08Xv<br> }<br> auth_mechanisms = plain login</p>
+<p>passdb {<br> driver=sql<br> args = /etc/dovecot/dovecot-mysql.conf<br> }<br> userdb {<br> driver=sql<br> args = /etc/dovecot/dovecot-mysql.conf<br> }</p>
+<h1 id="用于SMTP验证"><a href="#用于SMTP验证" class="headerlink" title="用于SMTP验证"></a>用于SMTP验证</h1><p>service auth {<br> unix_listener /var/spool/postfix/private/auth {<br> group = postfix<br> user = postfix<br> mode = 0660<br> }<br> }<br>建立MYSQL 配置文件，注意修改连接用户名密码，和前面的postfix配置一致</p>
+<p><strong>vi /etc/dovecot/dovecot-mysql.conf</strong></p>
+<p><pre class="brush: shell; gutter: true">driver = mysql<br>connect = host=localhost dbname=postfix user=postfix password=postfixpassword<br>default_pass_scheme = MD5-CRYPT<br>password_query = SELECT password FROM mailbox WHERE username = ‘%u’<br>user_query = SELECT maildir, 502 AS uid, 502 AS gid FROM mailbox WHERE username = ‘%u’</pre><br>建立邮箱文件夹,并给予postfix 用户权限</p>
+<p><strong>mkdir -pv /var/vmail</strong></p>
+<p><strong>chown -R postfix.postfix /var/vmail</strong></p>
+<p>启动服务</p>
+<p><strong>/usr/local/dovecot/sbin/dovecot</strong></p>
+<p></p><h2>6.安装配置 Postfixadmin</h2><br>解压 <em>postfixadmin.tar.gz</em> 并复制到站点目录下面<p></p>
+<p>修改 <em>config.inc.php</em> 文件，参考下面的配置进行，这里的数据库用户名密码均和前面的配置一致</p>
+<p><pre class="brush: php; gutter: true">$CONF[‘configured’] = true;<br>$CONF[‘default_language’] = ‘en’;<br>$CONF[‘database_type’] = ‘mysql’;<br>$CONF[‘database_host’] = ‘localhost’;<br>$CONF[‘database_user’] = ‘postfix’;<br>$CONF[‘database_password’] = ‘postfixpassword’;</pre><br>登录mysql 控制台建立postfix数据库，并建立一个postifx用户指定对 posfix 数据库本地访问权限</p>
+<p><pre class="brush: sql; gutter: true"><strong>&gt; create database postfix;</strong></pre></p>
+<blockquote>
+<p>grant all privileges on postfix.* to postfix@localhost identified by ‘postfix密码’;<br>flush privileges;<br>exit<br>配置完成后执行<em> <a href="http://ip地址/postfixadmin/setup.php" target="_blank" rel="noopener">http://ip地址/postfixadmin/setup.php</a></em> 进行安装</p>
+</blockquote>
+<p>安装后将 修改配置密码，把得到的 加密 密码字串复制并再次修改config.inc.php 文件</p>
+<p>$CONF[‘setup_password’] = ‘密码字串’;</p>
+<p>然后在页面上输入配置密码，并建立管理员账号,完成后 删除 setup.php</p>
+<p>登录 <a href="http://ip地址/postfixadmin" target="_blank" rel="noopener">http://ip地址/postfixadmin</a> 可以建立虚拟域和邮箱</p>
+<p></p><h2>7. 配置RoundCube</h2><br>解压 roundclube.tar.gz 并放置在网站目录下<p></p>
+<p>登录mysql 控制台建立roundcube数据库，并建立一个roundcube用户指定对 roundcube数据库本地访问权限</p>
+<p><pre class="brush: sql"><strong>&gt;create database roundcube;</strong></pre></p>
+<blockquote>
+<p>grant all privileges on roundcube.* to roundcube@localhost identified by ‘roundcube密码’;<br>flush privileges;<br>exit<br>打开浏览器 <a href="http://yourdomain/webmail/installer/" target="_blank" rel="noopener">http://yourdomain/webmail/installer/</a></p>
+</blockquote>
+<p>填写配置后将 main.inc.php 配置 和 db.inc.php 配置复制并覆盖 config/ 下对应文件即可</p>
+<hr>
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #6e6e6e;font-size:15px;">本文结束<i class="far fa-laugh-beam"></i>感谢您的阅读,本文原创–支持原创
+        </div>
+    
+</div>
+      
+    </div>
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>顺便打点赏吧~  有问题请联系我--strivedeer@163.com</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Antler 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="Antler 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/linux/" rel="tag"><i class="fa fa-tag"></i> linux</a>
+          
+            <a href="/tags/centos/" rel="tag"><i class="fa fa-tag"></i> centos</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/04/14/linux下yum命令是什么意思 原理和使用方法详解/" rel="next" title="linux下yum命令是什么意思 原理和使用方法详解">
+                <i class="fa fa-chevron-left"></i> linux下yum命令是什么意思 原理和使用方法详解
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/06/15/Linux内核态抢占机制分析/" rel="prev" title="Linux内核态抢占机制分析">
+                Linux内核态抢占机制分析 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zOTg3NC8xNjQwMQ"></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="Antler">
+            
+              <p class="site-author-name" itemprop="name">Antler</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">44</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">45</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/StriveDeer" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://gitee.com/antlerR/" target="_blank" title="Gitee">
+                      
+                        <i class="fa fa-fw fa-git"></i>Gitee</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:strivedeer@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">1.</span> <span class="nav-text">软件包说明:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">2.</span> <span class="nav-text">1.准备工作：</span></a></li></ol><li class="nav-item nav-level-1"><a class="nav-link" href="#configure-–with-php-config-usr-local-php-bin-php-config-–with-kerberos-–with-imap-ssl"><span class="nav-number"></span> <span class="nav-text">./configure –with-php-config=/usr/local/php/bin/php-config –with-kerberos –with-imap-ssl</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#make-amp-amp-make-install"><span class="nav-number"></span> <span class="nav-text">make &amp;&amp; make install</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">1.</span> <span class="nav-text">2. 编译安装Postfix</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#useradd-M-s-sbin-nologin-postdrop"><span class="nav-number"></span> <span class="nav-text">useradd -M -s /sbin/nologin postdrop</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">1.</span> <span class="nav-text">3.配置Postfix</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SASL-settings"><span class="nav-number"></span> <span class="nav-text">SASL settings</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">1.</span> <span class="nav-text">4.安装 Dovecot</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">2.</span> <span class="nav-text">5. 配置 Doevcot</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#开启pop3-imap-listen"><span class="nav-number"></span> <span class="nav-text">开启pop3 imap listen = *</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用postfix-用户"><span class="nav-number"></span> <span class="nav-text">使用postfix 用户</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#日志路径"><span class="nav-number"></span> <span class="nav-text">日志路径</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#邮件存储路径"><span class="nav-number"></span> <span class="nav-text">邮件存储路径</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#postfix-用户UID"><span class="nav-number"></span> <span class="nav-text">postfix 用户UID</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#用于SMTP验证"><span class="nav-number"></span> <span class="nav-text">用于SMTP验证</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">1.</span> <span class="nav-text">6.安装配置 Postfixadmin</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">2.</span> <span class="nav-text">7. 配置RoundCube</span></a></li></ol></li></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+
+  <i class="fa fa-heart" aria-hidden="true">IBiJi</i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Antler</span>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+<script src="https://s95.cnzz.com/z_stat.php?id=1260533060&web_id=1260533060" language="JavaScript"></script>
+
+  
+</div>
+
+
+  <span class="post-meta-divider"> </span>
+
+
+
+
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共48.8k字</span>
+</div>
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?487423740050432cdb057a9a3236f717";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
